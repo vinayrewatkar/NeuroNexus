@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('https://img.freepik.com/free-photo/old-black-background-grunge-texture-dark-wallpaper-blackboard-chalkboard-room-wall_1258-28313.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow: hidden; /* To hide horizontal scroll if any */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        form {
+            width: 300px;
+            max-height: 400px; /* Set a max height for scrollability */
+            overflow-y: auto; /* Enable vertical scrollbar if content exceeds max height */
+            padding: 20px;
+            background: rgba(222, 198, 198, 0.5);
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <form action="/create" method="POST" id="quiz-form">
+        <div class="form-group">
+            <label for="total-questions">Total Questions</label>
+            <input type="number" id="total-questions" name="total-questions" required>
+        </div>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            $('#total-questions').change(function() {
+                var totalQuestions = $(this).val();
+                for (var i = 0; i < totalQuestions; i++) {
+                    $('#quiz-form').append(`
+                        <div class="form-group">
+                            <label for="question-description-${i}">Question Description</label>
+                            <textarea id="question-description-${i}" name="questions.${i}.description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Options</label>
+                            <input type="text" name="questions.${i}.option1" placeholder="Option 1" required>
+                            <input type="text" name="questions.${i}.option2" placeholder="Option 2" required>
+                            <input type="text" name="questions.${i}.option3" placeholder="Option 3" required>
+                            <input type="text" name="questions.${i}.option4" placeholder="Option 4" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="correct-answer-${i}">Correct Answer</label>
+                            <input type="text" id="correct-answer-${i}" name="questions.${i}.correctAns" required>
+                        </div>
+                    `);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

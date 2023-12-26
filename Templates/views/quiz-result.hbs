@@ -1,0 +1,57 @@
+<!-- quiz-result.hbs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Result</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- Add your custom CSS if needed -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .result-message {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        .result-score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz Result</h1>
+        {{#if success}}
+            <div id="resultMessage" class="result-message">Quiz submitted successfully!</div>
+            <div id="resultScore" class="result-score">Your Score: {{score}}</div>
+        {{else}}
+            <div id="resultMessage" class="result-message" style="color: red;">{{error}}</div>
+        {{/if}}
+    </div>
+
+    <script src="/jq/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

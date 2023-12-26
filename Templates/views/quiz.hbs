@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .quiz-card {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .btn-submit {
+            display: block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz</h1>
+        <div id="quizForm">
+            <!-- Quiz questions will be dynamically inserted here using JavaScript -->
+        </div>
+        <button class="btn-submit" onclick="submitQuiz()">Submit Quiz</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Fetch quiz questions using AJAX
+            fetch("/api/get-quiz")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Populate quiz questions dynamically
+                        const quizForm = document.getElementById("quizForm");
+                        data.questions.forEach(function (question, index) {
+                            const questionHtml = `
+                                <div class="quiz-card">
+                                    <h5>Question ${index + 1}</h5>
+                                    <p>${question.description}</p>
+                                    <label>
+                                        <input type="radio" name="answer${index}" value="${question.option1}" required>
+                                        ${question.option1}
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="answer${index}" value="${question.option2}">
+                                        ${question.option2}
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="answer${index}" value="${question.option3}">
+                                        ${question.option3}
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="answer${index}" value="${question.option4}">
+                                        ${question.option4}
+                                    </label>
+                                </div>
+                            `;
+                            quizForm.innerHTML += questionHtml;
+                        });
+                    } else {
+                        alert("Failed to fetch quiz questions.");
+                    }
+                });
+        });
+
+    
+    function submitQuiz() {
+        // Process and submit quiz answers
+        const formData = new FormData(document.getElementById("quizForm"));
+        const answers = {};
+        formData.forEach((value, key) => {
+            answers[key] = value;
+        });
+
+        // Send answers to the server for processing
+        fetch("/Submit Quiz", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ answers })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the quiz result (you may redirect to a result page)
+            if (data.success) {
+                window.location.href = "/quiz-result"; // Redirect to the result page
+            } else {
+                console.error("Failed to submit quiz:", data.error);
+                // Handle error if needed
+            }
+        })
+        .catch(error => {
+            console.error("Error submitting quiz:", error);
+        });
+    }
+    </script>
+</body>
+</html>
+
